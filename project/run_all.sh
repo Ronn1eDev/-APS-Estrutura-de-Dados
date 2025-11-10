@@ -7,35 +7,35 @@ echo "========================================================"
 echo "          INICIANDO PROCESSO DE BENCHMARK"
 echo "========================================================"
 
-echo "🔄 Gerando novos dados de entrada..."
+echo " Gerando novos dados de entrada..."
 if [ -f "$INPUT_SCRIPT" ]; then
   bash "$INPUT_SCRIPT"
 else
-  echo "⚠️  Script $INPUT_SCRIPT não encontrado. Pulei esta etapa."
+  echo "  Script $INPUT_SCRIPT não encontrado. Pulei esta etapa."
 fi
-echo "✅ Dados gerados!"
+echo "Dados gerados!"
 echo ""
 
 if grep -q $'\r' "$SOURCE"; then
-  echo "🧹 Corrigindo quebras de linha estilo Windows..."
+  echo " Corrigindo quebras de linha estilo Windows..."
   dos2unix "$SOURCE"
 fi
 
-echo "🔧 Compilando programa ($SOURCE)..."
+echo " Compilando programa ($SOURCE)..."
 gcc "$SOURCE" -o "$EXEC" -O2 -Wall
 if [ $? -ne 0 ]; then
-  echo "❌ Erro na compilação!"
+  echo " Erro na compilação!"
   exit 1
 fi
-echo "✅ Compilação concluída! ($EXEC)"
+echo " Compilação concluída! ($EXEC)"
 echo ""
 
 run_test() {
   local input=$1
-  echo "🚀 Rodando benchmark com: $input ..."
+  echo " Rodando benchmark com: $input ..."
   echo "----------------------------------------------------------------------------------------"
   $EXEC "$input"
-  echo "📊 Execução concluída para $input"
+  echo " Execução concluída para $input"
   echo ""
 }
 
@@ -43,10 +43,10 @@ for input in inputs/input1.txt inputs/input2.txt inputs/input3.txt; do
   if [ -f "$input" ]; then
     run_test "$input"
   else
-    echo "⚠️  Arquivo $input não encontrado — pulando."
+    echo "  Arquivo $input não encontrado — pulando."
   fi
 done
 
 echo "========================================================"
-echo "🏁 Execuções concluídas!"
+echo " Execuções concluídas!"
 echo "========================================================"
